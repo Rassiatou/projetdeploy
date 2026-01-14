@@ -8,8 +8,16 @@ const app = express();
 
 // CORS DOIT ÊTRE ICI
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: (origin, cb) => {
+    // autorise aussi Postman / serveur-to-serveur (origin undefined)
+    if (!origin) return cb(null, true);
+
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+
+    return cb(new Error("Not allowed by CORS: " + origin));
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
 }));
 
 app.use(express.json());
