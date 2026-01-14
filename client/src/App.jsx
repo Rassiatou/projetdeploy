@@ -3,22 +3,23 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {API_BASE_URL} from "./config/api.js";
 
 function App() {
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ name: "", email: "" });
 
   useEffect(() => {
-    axios.get("http://localhost:5000/users").then((res) => {
+    axios.get(`${API_BASE_URL}/users`).then((res) => {
       setUsers(res.data);
     });
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5000/users", form);
+    await axios.post(`${API_BASE_URL}/users`, form);
     setForm({ name: "", email: "" });
-    const res = await axios.get("http://localhost:5000/users");
+    const res = await axios.get(`${API_BASE_URL}/users`);
     setUsers(res.data);
   };
 
